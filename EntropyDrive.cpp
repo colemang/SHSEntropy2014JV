@@ -51,14 +51,17 @@
 		int OldRight = mRightQuad;
 		mRightQuad = mRightEncoder->Get();
 		mLeftQuad = mLeftEncoder->Get();
-
+		
+#if CORRECT_MODE
 		int DeltaLeft = mLeftQuad - OldLeft;
 		int DeltaRight = mRightQuad - OldRight;
 		
 	    float F1 = mLeftMotor *DeltaRight;
 	    float F2 = mRightMotor *DeltaLeft;
+# endif
 	    float LeftCorrect = 1.0;
 	    float RightCorrect = 1.0;
+#if CORRECT_MODE
 	    if (CorrectMode)
 	    {
 	    	//if (fabs (mLeftMotor) > 0.50 && F2 != 0.0) LeftCorrect = F1 / F2;
@@ -66,7 +69,8 @@
 	    }
 		//ds->PrintfLine(DriverStationLCD::kUser_Line2, "rQ%d %d LC%f", mRightQuad, DeltaRight, RightCorrect);
 		//ds->PrintfLine(DriverStationLCD::kUser_Line3, "lQ%d %d RC%f", mLeftQuad, DeltaLeft, LeftCorrect);
-		// set the drive outputs
+#endif
+	    // set the drive outputs
 		const float coeff = 0.9;
 		float left = Limit (MoveValue+RotateValue);
 		float right = Limit (MoveValue-RotateValue);
