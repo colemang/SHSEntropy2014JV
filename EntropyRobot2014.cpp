@@ -179,7 +179,7 @@ public:
 				MyRobot.DriveRobot(0.0, 0.0, ds);
 			if (t == 0)
 			{
-				if (MyRobot.AtTopSpeed(Reverse)) t = ctrs;
+				if (MyRobot.AtTopSpeed()) t = ctrs;
 				if (ctrs > Distance/2) t = ctrs;
 				// if t is just way bigger than we meant to travel, set it to the distance (which will stop us)
 				if (t >= Distance) t = Distance;
@@ -194,13 +194,13 @@ public:
 		if (autoButton)
 		{
 			if (autoDrive == NULL)
-				autoDrive = new AutoDrive(100*m_Configuration->GetValue(m_Constant[cAutoDrive]));
+				autoDrive = new AutoDrive(m_Configuration->GetValue( m_Constant[ cAutoDrive]) * 100);
 			autoDrive->Periodic(MyRobot, ds);
-			ds->PrintfLine (DriverStationLCD::kUser_Line6, "autoDrive on");
+			ds->PrintfLine (DriverStationLCD::kUser_Line5, "autoDrive on");
 		}
 		else
 		{
-			ds->PrintfLine (DriverStationLCD::kUser_Line6, "autoDrive off");
+			ds->PrintfLine (DriverStationLCD::kUser_Line5, "autoDrive off");
 			if (autoDrive != NULL)
 			{
 				MyRobot.ResetCounters();
@@ -216,7 +216,7 @@ public:
 			
 			m_Configuration->Execute( DriveStick->GetRawButton( 2), DriveStick->GetZ(), ds);
 			
-			if(DriveStick->GetTrigger())
+			if(DriveStick->GetRawButton( 3))
 			{
 				ds->PrintfLine(DriverStationLCD::kUser_Line6, "Calculating distance...");
 				Vision *vision = new Vision();
@@ -246,7 +246,7 @@ public:
 		m_Constant[ cSTop] = m_Configuration->AddOption( "S Top", 255);
 		m_Constant[ cVBottom] = m_Configuration->AddOption( "V Bottom");
 		m_Constant[ cVTop] = m_Configuration->AddOption( "V Top", 255);
-		m_Constant[ cAutoDrive] = m_Configuration->AddOption( "AutoDrive", 1, 100);
+		m_Constant[ cAutoDrive] = m_Configuration->AddOption( "Auto Drive", 20);
 		
 	}
 
